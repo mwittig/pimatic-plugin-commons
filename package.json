@@ -17,7 +17,7 @@
   "keywords": [
     "Pimatic"
   ],
-  "version": "0.0.0",
+  "version": "0.8.0",
   "homepage": "https://github.com/mwittig/pimatic-plugin-commons/tree/master",
   "private": false,
   "repository": {
