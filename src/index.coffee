@@ -52,7 +52,7 @@ module.exports = (env) ->
           if upperRange
             return Math.min (Math.max value, lowerRange), upperRange
           else
-            return Math.max value lowerRange
+            return Math.max value, lowerRange
 
         unique: (array) ->
           return array if array.length < 2
