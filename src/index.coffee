@@ -6,7 +6,7 @@ module.exports = (env) ->
     series: (input, mapper) -> Promise.mapSeries(input, mapper)
 
     base: (device, deviceClassName) ->
-      return members = {
+      members = {
 
         rejectWithError: (reject, error) =>
           message = "#{deviceClassName} Error on device #{device.id}: " + error
@@ -14,11 +14,20 @@ module.exports = (env) ->
           reject message if reject?
 
         debug: () ->
-          mainArguments = Array.prototype.slice.call arguments
-          if mainArguments.length > 0
-            mainArguments[0] = "[#{deviceClassName}] #{mainArguments[0]}"
-          env.logger.debug mainArguments... if device.debug
+          if device.debug
+            mainArguments = Array.prototype.slice.call arguments
+            if mainArguments.length > 0
+              mainArguments[0] = "[#{deviceClassName}] #{mainArguments[0]}"
+            env.logger.debug mainArguments...
 
+        error: () ->
+          if device.debug or not device.__lastError? or device.__lastError isnt arguments[0] + ""
+            device.__lastError = arguments[0] + ""
+            mainArguments = Array.prototype.slice.call arguments
+            if mainArguments.length > 0
+              mainArguments[0] = "[#{deviceClassName}] #{mainArguments[0]}"
+            env.logger.error mainArguments...
+  
         setAttribute: (attributeName, value) ->
           if device['_' + attributeName] isnt value
             device['_' + attributeName] = value
@@ -44,5 +53,11 @@ module.exports = (env) ->
             return Math.min (Math.max value, lowerRange), upperRange
           else
             return Math.max value lowerRange
+
+        unique: (array) ->
+          return array if array.length < 2
+          output = {}
+          output[array[key]] = array[key] for key in [0...array.length]
+          value for key, value of output
       }
   }
