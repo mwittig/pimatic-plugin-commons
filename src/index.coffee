@@ -50,6 +50,12 @@ module.exports = (env) ->
             env.logger.error mainArguments...
 
         ###
+          Reset the lastError guard which inhibits the repeated output of the same error message
+        ###
+        resetLastError: () ->
+          device.__lastError = ""
+
+        ###
           Outputs an error message with an arbitrary list of arguments.
           The output is prefixed with the 'deviceClassName'
           and optionally the 'id' property (if present) of the device.
