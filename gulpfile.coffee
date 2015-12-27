@@ -36,7 +36,11 @@ gulp.task('test', ['pre-test'], ->
       verbose: false,
       includeStackTrace: true
     }))
-    .pipe(istanbul.writeReports())
+    .pipe(istanbul.writeReports({
+      dir: './coverage',
+      reporters: [ 'lcov', 'json', 'text', 'text-summary' ],
+      reportOpts: { dir: './coverage' }
+    }))
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }))
 )
 
