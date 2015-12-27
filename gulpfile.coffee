@@ -6,7 +6,7 @@ jasmine = require('gulp-jasmine')
 istanbul = require('gulp-istanbul');
 sourceFiles = ['./src/index.coffee']
 libFiles = ['./lib/index.js']
-
+coveralls = require('gulp-coveralls')
 
 gulp.task('develop', ->
   gulp.src(sourceFiles)
@@ -44,4 +44,9 @@ gulp.task('test', ['pre-test'], ->
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }))
 )
 
-gulp.task('default', ['build', 'test']);
+gulp.task('coveralls', ['test'], ->
+  gulp.src('./coverage/**/lcov.info')
+    .pipe(coveralls())
+)
+
+gulp.task('default', ['build', 'coveralls'])
