@@ -46,6 +46,7 @@
     "gulp-coveralls": "^0.1.4",
     "gulp-istanbul": "^0.10.3",
     "gulp-jasmine": "^2.2.1",
+    "gulp-markdox": "^0.1.1",
     "gulp-plumber": "^1.0.1",
     "gulp-watch": "^4.3.5"
   },

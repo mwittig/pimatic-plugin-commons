@@ -7,6 +7,7 @@ istanbul = require('gulp-istanbul');
 sourceFiles = ['./src/index.coffee']
 libFiles = ['./lib/index.js']
 coveralls = require('gulp-coveralls')
+markdox = require("gulp-markdox")
 
 gulp.task('develop', ->
   gulp.src(sourceFiles)
@@ -49,4 +50,9 @@ gulp.task('coveralls', ['test'], ->
     .pipe(coveralls())
 )
 
-gulp.task('default', ['build', 'coveralls'])
+gulp.task('doc', ->
+  gulp.src(sourceFiles)
+    .pipe(markdox({ concat: 'API.md', output: 'API.md' }))
+)
+
+gulp.task('default', ['build', 'test'])
