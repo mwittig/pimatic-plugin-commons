@@ -8,7 +8,7 @@ module.exports = (env) ->
     base: (device, deviceClassName) ->
       members = {
         _entityName: (id=device.id) ->
-          "[#{deviceClassName}" + if id then "##{id}]" else "]"
+          "[#{deviceClassName}" + if id? then "##{id}]" else "]"
 
         ###
           Outputs an error message and optionally rejects a Promise on return. If
@@ -19,7 +19,8 @@ module.exports = (env) ->
         rejectWithError: (reject, error) ->
           message = "Error: " + error
           members.error message
-          members.stack error
+          if device.debug is true
+            members.stack error
           reject message if reject?
 
         ###
@@ -33,6 +34,8 @@ module.exports = (env) ->
             mainArguments = Array.prototype.slice.call arguments
             if mainArguments.length > 0
               mainArguments[0] = members._entityName() + ' ' + mainArguments[0]
+            else
+              mainArguments[0] = members._entityName()
             env.logger.debug mainArguments...
 
         ###
@@ -47,6 +50,8 @@ module.exports = (env) ->
             mainArguments = Array.prototype.slice.call arguments
             if mainArguments.length > 0
               mainArguments[0] = members._entityName() + ' ' + mainArguments[0]
+            else
+              mainArguments[0] = members._entityName()
             env.logger.error mainArguments...
 
         ###
@@ -62,8 +67,7 @@ module.exports = (env) ->
           @param {Error}  [error] Error object, or null
         ###
         stack: (error=null) ->
-          if device.debug is true
-            env.logger.error if error?.stack? then error.stack else (new Error).stack
+          env.logger.error if error?.stack? then error.stack else (new Error).stack
 
         ###
           Set the named attribute to the given value. The attribute
@@ -83,6 +87,7 @@ module.exports = (env) ->
         cancelUpdate: () ->
           if device.__timeoutObject?
             clearTimeout device.__timeoutObject
+            device.__timeoutObject = null
 
         ###
           Schedule an update. The given member function of the device
@@ -103,7 +108,7 @@ module.exports = (env) ->
             )
 
         normalize: (value, lowerRange, upperRange) ->
-          if upperRange
+          if upperRange?
             return Math.min (Math.max value, lowerRange), upperRange
           else
             return Math.max value, lowerRange
@@ -113,5 +118,27 @@ module.exports = (env) ->
           output = {}
           output[array[key]] = array[key] for key in [0...array.length]
           value for key, value of output
+
+        ###
+          Schedules a given function which will not be called as long as it continues to be invoked.
+          The function will be called after it stops being called for the given delay milliseconds. To be able
+          to manage multiple, different debounce tasks an id string can be provided to identify the debounce task.
+        ###
+        debounce: (id, delay, fn) ->
+          if typeof(id) is 'number' and typeof(fn) is 'undefined'
+            fn = delay
+            delay = id
+            id = 'default'
+          device.__timerIds = {} unless device.__timerIds?
+          if device.__timerIds[id]?
+            clearTimeout device.__timerIds[id]
+            device.__timerIds[id] = null
+
+          device.__timerIds[id] = setTimeout () =>
+            members.debug "Timer id is null" if device.__timerIds[id] is null
+            device.__timerIds[id] = null
+            fn.call device
+          , delay
+          Promise.resolve()
       }
   }
