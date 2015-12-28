@@ -3,11 +3,12 @@ watch = require('gulp-watch')
 plumber = require('gulp-plumber')
 coffee = require('gulp-coffee')
 jasmine = require('gulp-jasmine')
-istanbul = require('gulp-istanbul');
+istanbul = require('gulp-istanbul')
 sourceFiles = ['./src/index.coffee']
 libFiles = ['./lib/index.js']
 coveralls = require('gulp-coveralls')
 markdox = require("gulp-markdox")
+coffeelint = require('gulp-coffeelint')
 
 gulp.task('develop', ->
   gulp.src(sourceFiles)
@@ -53,6 +54,12 @@ gulp.task('coveralls', ->
 gulp.task('doc', ->
   gulp.src(sourceFiles)
     .pipe(markdox({ concat: 'API.md', output: 'API.md' }))
+)
+
+gulp.task('lint', ->
+  gulp.src(sourceFiles)
+    .pipe(coffeelint())
+    .pipe(coffeelint.reporter())
 )
 
 gulp.task('default', ['build', 'test', 'doc'])

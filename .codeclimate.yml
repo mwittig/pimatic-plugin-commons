@@ -1,0 +1,15 @@
+engines:
+  coffeelint:
+    enabled: true
+  eslint:
+    enabled: false
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "**.coffee"
+  - "**.js"
+  - "**.jsx"
+exclude_paths:
+  - test/**/*
+  - lib/**/*

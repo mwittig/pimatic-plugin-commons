@@ -19,8 +19,8 @@ module.exports = (env) ->
     series: (input, mapper) -> Promise.mapSeries(input, mapper)
 
     ###
-      Base object providing device helper functions. **The functions described in the remainder
-      of this document are members of base**.
+      Base object providing device helper functions. **The functions described
+      in the remainder of this document are members of base**.
       @param  {Object} device - the device object
       @param  {String} deviceName - the device name to be used for log output
     ###
@@ -31,9 +31,10 @@ module.exports = (env) ->
           "[#{deviceClassName}" + if id? then "##{id}]" else "]"
 
         ###
-          Outputs an error message and optionally rejects a Promise on return. If
-          the debug property is set on the device a stack trace is output.
-          @param {Function} reject - function to reject a promise on return, may be null
+          Outputs an error message and optionally rejects a Promise on return.
+          If the debug property is set on the device a stack trace is output.
+          @param {Function} reject - function to reject a promise on return,
+                                     may be null
           @param {Error} error  - error object
         ###
         rejectWithError: (reject, error) ->
@@ -45,18 +46,19 @@ module.exports = (env) ->
 
         ###
           Outputs an debug message with an arbitrary list of arguments if
-          the debug property is set. The output is prefixed with the 'deviceClassName'
-          and optionally the 'id' property (if present) of the device.
+          the debug property is set. The output is prefixed with the
+          'deviceClassName' and optionally the 'id' property (if present)
+          of the device.
           @param ...
         ###
         debug: () ->
           if device.debug is true
-            mainArguments = Array.prototype.slice.call arguments
-            if mainArguments.length > 0
-              mainArguments[0] = members._entityName() + ' ' + mainArguments[0]
+            args = Array.prototype.slice.call arguments
+            if args.length > 0
+              args[0] = members._entityName() + ' ' + args[0]
             else
-              mainArguments[0] = members._entityName()
-            env.logger.debug mainArguments...
+              args[0] = members._entityName()
+            env.logger.debug args...
 
         ###
           Outputs an error message with an arbitrary list of arguments.
@@ -65,17 +67,19 @@ module.exports = (env) ->
           @param ...
         ###
         error: () ->
-          if device.debug is true or not device.__lastError? or device.__lastError isnt arguments[0] + ""
+          if (device.debug is true or not device.__lastError? or
+              device.__lastError isnt arguments[0] + "")
             device.__lastError = arguments[0] + ""
-            mainArguments = Array.prototype.slice.call arguments
-            if mainArguments.length > 0
-              mainArguments[0] = members._entityName() + ' ' + mainArguments[0]
+            args = Array.prototype.slice.call arguments
+            if args.length > 0
+              args[0] = members._entityName() + ' ' + args[0]
             else
-              mainArguments[0] = members._entityName()
-            env.logger.error mainArguments...
+              args[0] = members._entityName()
+            env.logger.error args...
 
         ###
-          Reset the lastError guard which inhibits the repeated output of the same error message
+          Reset the lastError guard which inhibits the repeated
+          output of the same error message
         ###
         resetLastError: () ->
           device.__lastError = ""
@@ -87,12 +91,13 @@ module.exports = (env) ->
           @param {Error}  [error] Error object, or null
         ###
         stack: (error=null) ->
-          env.logger.error if error?.stack? then error.stack else (new Error).stack
+          env.logger.error (
+            if error?.stack? then error.stack else (new Error).stack)
 
         ###
           Set the named attribute to the given value. The attribute
-          value must be kept in a member variable named _<attributeName>
-          where <attributeName> is a place holder for the attribute name.
+          value must be kept in a member variable named `_<attributeName>`
+          where `<attributeName>` is a place holder for the attribute name.
           @param {String} attributeName - the attribute name
           @param {Any} value - the attribute value
         ###
@@ -121,15 +126,15 @@ module.exports = (env) ->
 
           if interval > 0
             members.debug "Next Request in #{interval} ms"
-            device.__timeoutObject = setTimeout( =>
+            device.__timeoutObject = setTimeout( ->
               device.__timeoutObject = null
               func.call(device)
             , interval
             )
 
         ###
-          Normalize a given value to match the given lowerRange and upperRange. The
-          latter is optional.
+          Normalize a given value to match the given lowerRange and
+          upperRange. The latter is optional.
           @param {Number} value - the value
           @param {Number} lowerRange - the lower range
           @param {Number} [upperRange] - the upper range
@@ -154,11 +159,14 @@ module.exports = (env) ->
           value for key, value of output
 
         ###
-          Schedules a given function which will not be called as long as it continues to be invoked.
-          The function will be called after it stops being called for the given delay milliseconds. To be able
-          to manage multiple, different debounce tasks an id string can be provided to identify the debounce task.
+          Schedules a given function which will not be called as long as it
+          continues to be invoked. The function will be called after it stops
+          being called for the given delay milliseconds. To be able to manage
+          multiple, different debounce tasks an id string can be provided to
+          identify the debounce task.
           @param {String} [id] - a string to identify the task.
-                                Required to debounce different tasks at the same time.
+                                Required to debounce different tasks at
+                                the same time.
           @param {Number} delay - delay in milliseconds
           @param {Function} fn - function to be called
         ###
@@ -172,7 +180,7 @@ module.exports = (env) ->
             clearTimeout device.__timerIds[id]
             device.__timerIds[id] = null
 
-          device.__timerIds[id] = setTimeout () =>
+          device.__timerIds[id] = setTimeout () ->
             members.debug "Timer id is null" if device.__timerIds[id] is null
             device.__timerIds[id] = null
             fn.call device

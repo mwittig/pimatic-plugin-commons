@@ -21,8 +21,8 @@ Maps an array of promises or items to a mapping function resolving or
 
 ## base(device, deviceName)
 
-Base object providing device helper functions. **The functions described in the remainder
-        of this document are members of base**.
+Base object providing device helper functions. **The functions described
+        in the remainder of this document are members of base**.
 
 ### Params:
 
@@ -31,19 +31,20 @@ Base object providing device helper functions. **The functions described in the 
 
 ## rejectWithError(reject, error)
 
-Outputs an error message and optionally rejects a Promise on return. If
-            the debug property is set on the device a stack trace is output.
+Outputs an error message and optionally rejects a Promise on return.
+            If the debug property is set on the device a stack trace is output.
 
 ### Params:
 
-* **Function** *reject* - function to reject a promise on return, may be null
+* **Function** *reject* - function to reject a promise on return,                                        may be null
 * **Error** *error* - error object
 
 ## debug(...)
 
 Outputs an debug message with an arbitrary list of arguments if
-            the debug property is set. The output is prefixed with the 'deviceClassName'
-            and optionally the 'id' property (if present) of the device.
+            the debug property is set. The output is prefixed with the
+            'deviceClassName' and optionally the 'id' property (if present)
+            of the device.
 
 ### Params:
 
@@ -61,7 +62,8 @@ Outputs an error message with an arbitrary list of arguments.
 
 ## resetLastError()
 
-Reset the lastError guard which inhibits the repeated output of the same error message
+Reset the lastError guard which inhibits the repeated
+            output of the same error message
 
 ## stack([error])
 
@@ -76,8 +78,8 @@ Outputs a stack trace if debug is enabled.
 ## setAttribute(attributeName, value)
 
 Set the named attribute to the given value. The attribute
-            value must be kept in a member variable named _<attributeName>
-            where <attributeName> is a place holder for the attribute name.
+            value must be kept in a member variable named `_<attributeName>`
+            where `<attributeName>` is a place holder for the attribute name.
 
 ### Params:
 
@@ -101,8 +103,8 @@ Schedule an update. The given member function of the device
 
 ## normalize(value, lowerRange, [upperRange])
 
-Normalize a given value to match the given lowerRange and upperRange. The
-            latter is optional.
+Normalize a given value to match the given lowerRange and
+            upperRange. The latter is optional.
 
 ### Params:
 
@@ -126,13 +128,16 @@ Removes duplicates from a given array of strings or number items. The
 
 ## debounce([id], delay, fn)
 
-Schedules a given function which will not be called as long as it continues to be invoked.
-            The function will be called after it stops being called for the given delay milliseconds. To be able
-            to manage multiple, different debounce tasks an id string can be provided to identify the debounce task.
+Schedules a given function which will not be called as long as it
+            continues to be invoked. The function will be called after it stops
+            being called for the given delay milliseconds. To be able to manage
+            multiple, different debounce tasks an id string can be provided to
+            identify the debounce task.
 
 ### Params:
 
-* **String** *[id]* - a string to identify the task.                                   Required to debounce different tasks at the same time.
+* **String** *[id]* - a string to identify the task.                                   Required to debounce different tasks at
+                                  the same time.
 * **Number** *delay* - delay in milliseconds
 * **Function** *fn* - function to be called
 
