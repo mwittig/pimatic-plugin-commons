@@ -2,6 +2,8 @@
 
 <!-- Start src\index.coffee -->
 
+## pimatic-plugin-commons API
+
 ## settled()
 
 Waits for a given promise to be resolved or rejected.
@@ -17,9 +19,15 @@ Maps an array of promises or items to a mapping function resolving or
 * **Array** *input* - an array of promises or items
 * **Function** *mapper* - the mapping function
 
-## base()
+## base(device, deviceName)
 
-Base object providing device helper functions.
+Base object providing device helper functions. **The functions described in the remainder
+        of this document are members of base**.
+
+### Params:
+
+* **Object** *device* - the device object
+* **String** *deviceName* - the device name to be used for log output
 
 ## rejectWithError(reject, error)
 

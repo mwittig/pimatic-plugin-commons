@@ -22,21 +22,29 @@ var fakeEnv = {
     numberOfErrorMessages: 0,
     require: require
 };
-var fakeDevice = {
-    debug: true,
-    events: {},
-    emit: function(attributeName, attributeValue) {
-        fakeDevice.events[attributeName] = attributeValue
-    }
-};
+
 var Promise = require("bluebird");
 var common = require("../lib")(fakeEnv);
-var base = common.base(fakeDevice, "test");
 
 
 describe("Testing the base device functions", function() {
+    var fakeDevice, base;
 
-    it("shall reject with an error message", function(done) {
+    beforeEach(function(done) {
+        setTimeout(function() {
+            fakeDevice = {
+                debug: true,
+                events: {},
+                emit: function(attributeName, attributeValue) {
+                    fakeDevice.events[attributeName] = attributeValue
+                }
+            };
+            base = common.base(fakeDevice, "test");
+            done();
+        }, 1);
+    });
+
+    it("shall reject with an error message and stack trace", function(done) {
         var numberOfMessages = fakeEnv.numberOfErrorMessages;
         var promise = new Promise(function (resolve, reject) {
             base.rejectWithError(reject, "testme");
@@ -44,6 +52,20 @@ describe("Testing the base device functions", function() {
         promise.catch(function(error) {
             // prints 2 messages on debug as it produces an additional stacktrace
             expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 2);
+            done();
+        });
+
+    });
+
+    it("shall reject with an error message without stack trace", function(done) {
+        var numberOfMessages = fakeEnv.numberOfErrorMessages;
+        var promise = new Promise(function (resolve, reject) {
+            fakeDevice.debug = false;
+            base.rejectWithError(reject, "testme");
+            fakeDevice.debug = true;
+        });
+        promise.catch(function(error) {
+            expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 1);
             done();
         });
 
@@ -153,6 +175,7 @@ describe("Testing the base device functions", function() {
     });
 
     it("shall not trigger an event if attribute is set to the same value", function() {
+        base.setAttribute("testme", 4711);
         fakeDevice.events = {};
         base.setAttribute("testme", 4711);
 
@@ -169,6 +192,17 @@ describe("Testing the base device functions", function() {
         }
 
         base.scheduleUpdate(update, 500);
+    });
+
+    it("shall not schedule an update if interval is 0", function(done) {
+        function update() {
+            expect(true).toBe(false);
+            done();
+        }
+        base.scheduleUpdate(update, 0);
+        base.debounce(500, function() {
+            done()
+        })
     });
 
     it("shall cancel an update", function() {

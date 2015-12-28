@@ -1,3 +1,6 @@
+###
+  @class pimatic-plugin-commons API
+###
 module.exports = (env) ->
   Promise = env.require 'bluebird'
   return {
@@ -16,9 +19,13 @@ module.exports = (env) ->
     series: (input, mapper) -> Promise.mapSeries(input, mapper)
 
     ###
-      Base object providing device helper functions.
+      Base object providing device helper functions. **The functions described in the remainder
+      of this document are members of base**.
+      @param  {Object} device - the device object
+      @param  {String} deviceName - the device name to be used for log output
     ###
     base: (device, deviceClassName) ->
+
       members = {
         _entityName: (id=device.id) ->
           "[#{deviceClassName}" + if id? then "##{id}]" else "]"

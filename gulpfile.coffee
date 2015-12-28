@@ -45,7 +45,7 @@ gulp.task('test', ['pre-test'], ->
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }))
 )
 
-gulp.task('coveralls', ['test'], ->
+gulp.task('coveralls', ->
   gulp.src('./coverage/**/lcov.info')
     .pipe(coveralls())
 )
@@ -55,4 +55,4 @@ gulp.task('doc', ->
     .pipe(markdox({ concat: 'API.md', output: 'API.md' }))
 )
 
-gulp.task('default', ['build', 'test'])
+gulp.task('default', ['build', 'test', 'doc'])
