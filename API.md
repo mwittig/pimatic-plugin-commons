@@ -29,7 +29,7 @@ Base object providing device helper functions. **The functions described
 * **Object** *device* - the device object
 * **String** *deviceName* - the device name to be used for log output
 
-## rejectWithError(reject, error)
+## rejectWithErrorString(reject, error)
 
 Outputs an error message and optionally rejects a Promise on return.
             If the debug property is set on the device a stack trace is output.
@@ -37,6 +37,17 @@ Outputs an error message and optionally rejects a Promise on return.
 ### Params:
 
 * **Function** *reject* - function to reject a promise on return,                                        may be null
+* **Error** *error* - error object
+
+## rejectWithError(reject, error)
+
+Same as rejectWithErrorString, but has been deprecated
+
+**Deprecated**
+
+### Params:
+
+* **Function** *reject* - function to reject a promise on return, may be null
 * **Error** *error* - error object
 
 ## debug(...)

@@ -44,7 +44,7 @@ describe("Testing the base device functions", function() {
         }, 1);
     });
 
-    it("shall reject with an error message and stack trace", function(done) {
+    it("shall reject with an error message (rejectWithError) and stack trace", function(done) {
         var numberOfMessages = fakeEnv.numberOfErrorMessages;
         var promise = new Promise(function (resolve, reject) {
             base.rejectWithError(reject, "testme");
@@ -57,11 +57,24 @@ describe("Testing the base device functions", function() {
 
     });
 
-    it("shall reject with an error message without stack trace", function(done) {
+    it("shall reject with an error message (rejectWithErrorString) and stack trace", function(done) {
+        var numberOfMessages = fakeEnv.numberOfErrorMessages;
+        var promise = new Promise(function (resolve, reject) {
+            base.rejectWithErrorString(reject, "testme");
+        });
+        promise.catch(function(error) {
+            // prints 2 messages on debug as it produces an additional stacktrace
+            expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 2);
+            done();
+        });
+
+    });
+
+    it("shall reject with an error message (rejectWithErrorString) without stack trace", function(done) {
         var numberOfMessages = fakeEnv.numberOfErrorMessages;
         var promise = new Promise(function (resolve, reject) {
             fakeDevice.debug = false;
-            base.rejectWithError(reject, "testme");
+            base.rejectWithErrorString(reject, "testme");
             fakeDevice.debug = true;
         });
         promise.catch(function(error) {
@@ -71,17 +84,28 @@ describe("Testing the base device functions", function() {
 
     });
 
-    it("shall print an error message without rejection", function(done) {
+    it("shall print an error message without rejection (rejectWithErrorString)", function(done) {
         var numberOfMessages = fakeEnv.numberOfErrorMessages;
         var promise = new Promise(function (resolve, reject) {
-            base.rejectWithError(null, "testme");
+            base.rejectWithErrorString(null, "testme");
             expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 2);
             done();
         });
         promise.catch(function(error) {
             expect(true).toBe(false);
         });
+    });
 
+    it("shall print an error message for no error passed (rejectWithErrorString)", function(done) {
+        var numberOfMessages = fakeEnv.numberOfErrorMessages;
+        var promise = new Promise(function (resolve, reject) {
+            base.rejectWithErrorString();
+            expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 2);
+            done();
+        });
+        promise.catch(function(error) {
+            expect(true).toBe(false);
+        });
     });
 
     it("shall return the entity name", function() {

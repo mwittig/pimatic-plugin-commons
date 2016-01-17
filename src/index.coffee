@@ -37,12 +37,24 @@ module.exports = (env) ->
                                      may be null
           @param {Error} error  - error object
         ###
-        rejectWithError: (reject, error) ->
-          message = "Error: " + error
+        rejectWithErrorString: (reject, error="Unknown") ->
+          message = "" + (error.message ? error)
+          if not message.match(/^Error:\ /)?
+            message = "Error: " + message
+
           members.error message
           if device.debug is true
             members.stack error
           reject message if reject?
+
+        ###
+          Same as rejectWithErrorString, but has been deprecated
+          @param {Function} reject - function to reject a promise on return, may be null
+          @param {Error} error  - error object
+          @deprecated
+        ###
+        rejectWithError: (reject, error="Unknown") ->
+          members.rejectWithErrorString reject, error
 
         ###
           Outputs an debug message with an arbitrary list of arguments if
