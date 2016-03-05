@@ -57,6 +57,20 @@ describe("Testing the base device functions", function() {
 
     });
 
+    it("shall reject with error message 'Unknown' (rejectWithError) and stack trace", function(done) {
+        var numberOfMessages = fakeEnv.numberOfErrorMessages;
+        var promise = new Promise(function (resolve, reject) {
+            base.rejectWithError(reject);
+        });
+        promise.catch(function(error) {
+            // prints 2 messages on debug as it produces an additional stacktrace
+            expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 2);
+            expect(error).toEqual("Error: Unknown");
+            done();
+        });
+
+    });
+
     it("shall reject with an error message (rejectWithErrorString) and stack trace", function(done) {
         var numberOfMessages = fakeEnv.numberOfErrorMessages;
         var promise = new Promise(function (resolve, reject) {

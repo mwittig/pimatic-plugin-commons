@@ -33,8 +33,9 @@ gulp.task('pre-test', ['build'], ->
 )
 
 gulp.task('test', ['pre-test'], ->
-  gulp.src('test/index.js')
-    .pipe(jasmine({
+  gulp.src(['test/index.js'])
+  .pipe(plumber())
+  .pipe(jasmine({
       verbose: false,
       includeStackTrace: true
     }))
