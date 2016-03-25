@@ -5,4 +5,12 @@
 [![Dependency Status](https://david-dm.org/mwittig/pimatic-plugin-commons.svg)](https://david-dm.org/mwittig/pimatic-plugin-commons)
 
 Common helper functions for pimatic plugins. For API documentation, see 
-[API.md](https://github.com/mwittig/pimatic-plugin-commons/blob/master/API.md) 
+[API.md](https://github.com/mwittig/pimatic-plugin-commons/blob/master/API.md).
+
+## License
+
+Copyright (c) 2016, Marcus Wittig and contributors
+
+All rights reserved.
+
+[AGPL-3.0](https://github.com/mwittig/pimatic-plugin-commons/blob/master/LICENSE)

@@ -7,7 +7,7 @@ module.exports = (env) ->
     ###
       Waits for a given promise to be resolved or rejected.
     ###
-    settled: (promise) -> Promise.settle([promise])
+    settled: (promise) -> promise.reflect()
 
     ###
       Maps an array of promises or items to a mapping function resolving or
