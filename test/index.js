@@ -1,6 +1,13 @@
 var printConsoleMessages = false;
 var fakeEnv = {
     logger: {
+        info: function() {
+            if (printConsoleMessages) {
+                console.log.apply(this, arguments);
+            }
+            fakeEnv.infoMessage = arguments;
+            fakeEnv.numberOfInfoMessages++;
+        },
         debug: function() {
             if (printConsoleMessages) {
                 console.log.apply(this, arguments);
@@ -16,8 +23,10 @@ var fakeEnv = {
             fakeEnv.numberOfErrorMessages++;
         }
     },
+    infoMessage: [],
     debugMessage: [],
     errorMessage: [],
+    numberOfInfoMessages: 0,
     numberOfDebugMessages: 0,
     numberOfErrorMessages: 0,
     require: require
@@ -124,6 +133,25 @@ describe("Testing the base device functions", function() {
 
     it("shall return the entity name", function() {
         expect(base._entityName("X")).toBe("[test#X]");
+    });
+
+    it("shall print an info message", function() {
+        var numberOfMessages = fakeEnv.numberOfInfoMessages;
+        base.info("testme");
+        expect(fakeEnv.numberOfInfoMessages).toBe(numberOfMessages + 1);
+        expect(fakeEnv.infoMessage[0]).toBe("[test] testme");
+
+        numberOfMessages = fakeEnv.numberOfInfoMessages;
+        base.info();
+        expect(fakeEnv.numberOfInfoMessages).toBe(numberOfMessages + 1);
+        expect(fakeEnv.infoMessage[0]).toBe("[test]");
+
+        numberOfMessages = fakeEnv.numberOfInfoMessages;
+        fakeDevice.id = "1";
+        base.info("testme");
+        expect(fakeEnv.numberOfInfoMessages).toBe(numberOfMessages + 1);
+        expect(fakeEnv.infoMessage[0]).toBe("[test#1] testme");
+        fakeDevice.id = undefined;
     });
 
     it("shall print a debug message with debug enabled", function() {

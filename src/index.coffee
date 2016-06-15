@@ -57,7 +57,21 @@ module.exports = (env) ->
           members.rejectWithErrorString reject, error
 
         ###
-          Outputs an debug message with an arbitrary list of arguments if
+          Outputs an info message with an arbitrary list of arguments.
+          The output is prefixed with the 'deviceClassName' and optionally
+          the 'id' property (if present) of the device.
+          @param ...
+        ###
+        info: () ->
+          args = Array.prototype.slice.call arguments
+          if args.length > 0
+            args[0] = members._entityName() + ' ' + args[0]
+          else
+            args[0] = members._entityName()
+          env.logger.info args...
+
+        ###
+          Outputs a debug message with an arbitrary list of arguments if
           the debug property is set. The output is prefixed with the
           'deviceClassName' and optionally the 'id' property (if present)
           of the device.
