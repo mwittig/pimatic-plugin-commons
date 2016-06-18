@@ -154,6 +154,21 @@ describe("Testing the base device functions", function() {
         });
     });
 
+    it("shall prefix error message with customer message (rejectWithErrorString)", function(done) {
+        var numberOfMessages = fakeEnv.numberOfErrorMessages;
+        var promise = new Promise(function (resolve, reject) {
+            fakeDevice.debug = false;
+            base.rejectWithErrorString(null, { message: "Error: Message" }, "Custom Message");
+            fakeDevice.debug = true;
+            expect(fakeEnv.errorMessage[0]).toBe('[test] Custom Message: Error: Message');
+            expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 1);
+            done();
+        });
+        promise.catch(function(error) {
+            expect(true).toBe(false);
+        });
+    });
+
     it("shall return the entity name", function() {
         expect(base._entityName("X")).toBe("[test#X]");
     });

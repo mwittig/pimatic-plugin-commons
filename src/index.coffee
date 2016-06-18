@@ -36,11 +36,15 @@ module.exports = (env) ->
           @param {Function} reject - function to reject a promise on return,
                                      may be null
           @param {Error} error  - error object
+          @param {String} [customMessage]  - a custom message to be used as prefix to the error message
         ###
-        rejectWithErrorString: (reject, error="Unknown") ->
+        rejectWithErrorString: (reject, error="Unknown", customMessage=null) ->
           message = "" + (error.message ? error)
           if not message.match(/^Error:\ /)?
             message = "Error: " + message
+
+          if customMessage?
+            message = "#{customMessage}: #{message}"
 
           members.error message
           if device.debug is true
@@ -220,9 +224,9 @@ module.exports = (env) ->
           @param {String} [lastId] - the lastId returned by generateDeviceId
           @returns {String} the id generated or undefined if id could not be generated
         ###
-        generateDeviceId: (framework, prefix, lastId = '') ->
+        generateDeviceId: (framework, prefix, lastId = null) ->
           start = 1
-          if lastId? and lastId isnt ''
+          if lastId?
             m = lastId.match /.*-([0-9]+)$/
             start = +m[1] + 1 if m? and m.length is 2
           for x in [start...1000] by 1
