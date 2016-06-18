@@ -162,5 +162,20 @@ Schedules a given function which will not be called as long as it
 * **Number** *delay* - delay in milliseconds
 * **Function** *fn* - function to be called
 
+## generateDeviceId([framework], prefix, framework, [lastId])
+
+Generates a new device id which is not yet in use by another device
+
+### Params:
+
+* *[framework]* - the pimatic framework object.
+* **String** *prefix* - a prefix string to be used as part of device id.
+* **Integer** *framework* - the pimatic framework object.
+* **String** *[lastId]* - the lastId returned by generateDeviceId
+
+### Return:
+
+* **String** the id generated or undefined if id could not be generated
+
 <!-- End src\index.coffee -->
 
