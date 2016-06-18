@@ -181,7 +181,7 @@ module.exports = (env) ->
         unique: (array) ->
           return array if array.length < 2
           output = {}
-          output[array[key]] = array[key] for key in [0...array.length]
+          output[array[key]] = array[key] for key in [0...array.length] by 1
           value for key, value of output
 
         ###
@@ -212,5 +212,24 @@ module.exports = (env) ->
             fn.call device
           , delay
           Promise.resolve()
+
+        ###
+          Generates a new device id which is not yet in use by another device
+          @param {*} [framework] - the pimatic framework object.
+          @param {String} prefix - a prefix string to be used as part of device id.
+          @param {Integer} framework - the pimatic framework object.
+          @param {String} [lastId] - the lastId returned by generateDeviceId
+          @returns {String} the id generated or undefined if id could not be generated
+        ###
+        generateDeviceId: (framework, prefix, lastId = '') ->
+          start = 1
+          if lastId? and lastId isnt ''
+            m = lastId.match /.*-([0-9]+)$/
+            start = +m[1] + 1 if m? and m.length is 2
+          for x in [start...1000] by 1
+            result = "#{prefix}-#{x}"
+            matched = framework.deviceManager.devicesConfig.some (element, iterator) ->
+              element.id is result
+            return result if not matched
       }
   }

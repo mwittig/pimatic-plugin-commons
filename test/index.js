@@ -23,6 +23,14 @@ var fakeEnv = {
             fakeEnv.numberOfErrorMessages++;
         }
     },
+    framework: {
+        deviceManager: {
+            devicesConfig: [],
+            addDevice: function addDevice(id) {
+                fakeEnv.framework.deviceManager.devicesConfig.push({id: id})
+            }
+        }
+    },
     infoMessage: [],
     debugMessage: [],
     errorMessage: [],
@@ -124,6 +132,21 @@ describe("Testing the base device functions", function() {
         var promise = new Promise(function (resolve, reject) {
             base.rejectWithErrorString();
             expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 2);
+            done();
+        });
+        promise.catch(function(error) {
+            expect(true).toBe(false);
+        });
+    });
+
+    it("shall not prefix error message if message start with Error: (rejectWithErrorString)", function(done) {
+        var numberOfMessages = fakeEnv.numberOfErrorMessages;
+        var promise = new Promise(function (resolve, reject) {
+            fakeDevice.debug = false;
+            base.rejectWithErrorString(null, { message: "Error: Message"});
+            fakeDevice.debug = true;
+            expect(fakeEnv.errorMessage[0]).toBe('[test] Error: Message');
+            expect(fakeEnv.numberOfErrorMessages).toBe(numberOfMessages + 1);
             done();
         });
         promise.catch(function(error) {
@@ -362,6 +385,25 @@ describe("Testing the base device functions", function() {
             expect(sum).toBe(6);
             done();
         })
+    });
+
+    it("generate a device id", function(done) {
+        var deviceId = base.generateDeviceId(fakeEnv.framework, "myDevice");
+        expect(deviceId).toBe("myDevice-1");
+        fakeEnv.framework.deviceManager.addDevice(deviceId);
+
+        deviceId = base.generateDeviceId(fakeEnv.framework, "myDevice", deviceId);
+        expect(deviceId).toBe("myDevice-2");
+        fakeEnv.framework.deviceManager.addDevice(deviceId);
+
+        deviceId = base.generateDeviceId(fakeEnv.framework, "myDevice", "myDevice");
+        expect(deviceId).toBe("myDevice-3");
+        fakeEnv.framework.deviceManager.addDevice(deviceId);
+        done();
+
+        deviceId = base.generateDeviceId(fakeEnv.framework, "myDevice", "myDevice-1000");
+        expect(deviceId).toBeUndefined();
+        done();
     });
 });
 
