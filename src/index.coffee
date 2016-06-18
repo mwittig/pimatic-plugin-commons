@@ -215,9 +215,8 @@ module.exports = (env) ->
 
         ###
           Generates a new device id which is not yet in use by another device
-          @param {*} [framework] - the pimatic framework object.
+          @param {Object} framework - the pimatic framework object.
           @param {String} prefix - a prefix string to be used as part of device id.
-          @param {Integer} framework - the pimatic framework object.
           @param {String} [lastId] - the lastId returned by generateDeviceId
           @returns {String} the id generated or undefined if id could not be generated
         ###
