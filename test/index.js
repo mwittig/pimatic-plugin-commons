@@ -52,8 +52,13 @@ describe("Testing the base device functions", function() {
             fakeDevice = {
                 debug: true,
                 events: {},
+                nEvents: 0,
                 emit: function(attributeName, attributeValue) {
+                    if (Object.keys(fakeDevice.events).length == 0) {
+                        fakeDevice.nEvents = 0;
+                    }
                     fakeDevice.events[attributeName] = attributeValue
+                    fakeDevice.nEvents++
                 }
             };
             base = common.base(fakeDevice, "test");
@@ -276,12 +281,27 @@ describe("Testing the base device functions", function() {
 
         expect(fakeDevice._testme).toBe(4711);
         expect(fakeDevice.events.testme).toBe(4711);
+
+        var numEvents = fakeDevice.nEvents;
+        base.setAttribute("testme", 4711, true);
+        expect(fakeDevice.nEvents).toBe(numEvents);
+
+        base.setAttribute("testme", 4711, false);
+        expect(fakeDevice.nEvents).toBe(numEvents + 1);
+    });
+
+    it("shall set the discrete attribute value", function() {
+        fakeDevice.events = {};
+        base.setAttribute("testme", 4711);
+
+        expect(fakeDevice._testme).toBe(4711);
+        expect(fakeDevice.events.testme).toBe(4711);
     });
 
     it("shall not trigger an event if attribute is set to the same value", function() {
         base.setAttribute("testme", 4711);
         fakeDevice.events = {};
-        base.setAttribute("testme", 4711);
+        base.setAttribute("testme", 4711, true);
 
         expect(fakeDevice._testme).toBe(4711);
         expect(fakeDevice.events.testme).toBeUndefined();

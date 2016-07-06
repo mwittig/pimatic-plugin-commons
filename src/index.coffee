@@ -128,11 +128,17 @@ module.exports = (env) ->
           Set the named attribute to the given value. The attribute
           value must be kept in a member variable named `_<attributeName>`
           where `<attributeName>` is a place holder for the attribute name.
+
+          The optional `discrete` parameter can be used to optimize the update
+          behaviour of discrete attribute value, i.e., the attribute value is
+          only updated if the value has been changed.
           @param {String} attributeName - the attribute name
           @param {Any} value - the attribute value
+          @param [Boolean} [discrete=false] - True if attribute value is discrete,
+          e.g., a switch state. False, otherwise.
         ###
-        setAttribute: (attributeName, value) ->
-          if device['_' + attributeName] isnt value
+        setAttribute: (attributeName, value, discrete=false) ->
+          if not discrete or device['_' + attributeName] isnt value
             device['_' + attributeName] = value
             device.emit attributeName, value
 

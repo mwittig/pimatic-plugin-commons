@@ -97,16 +97,21 @@ Outputs a stack trace if debug is enabled.
 
 * **Error** *[error]* Error object, or null
 
-## setAttribute(attributeName, value)
+## setAttribute(attributeName, value, [Boolean} [discrete=false] - True if attribute value is discrete,)
 
 Set the named attribute to the given value. The attribute
             value must be kept in a member variable named `_<attributeName>`
             where `<attributeName>` is a place holder for the attribute name.
+          
+            The optional `discrete` parameter can be used to optimize the update
+            behaviour of discrete attribute value, i.e., the attribute value is
+            only updated if the value has been changed.
 
 ### Params:
 
 * **String** *attributeName* - the attribute name
 * **Any** *value* - the attribute value
+* *[Boolean} [discrete=false] - True if attribute value is discrete,*             e.g., a switch state. False, otherwise.
 
 ## cancelUpdate()
 
