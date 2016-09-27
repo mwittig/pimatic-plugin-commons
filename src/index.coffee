@@ -156,15 +156,19 @@ module.exports = (env) ->
           remove any previous schedule.
           @param {Function} func - update function to be called
           @param {Number} interval - interval in milliseconds
+          @param [...] - additional parameters which are passed through
+                         to the function specified by func once the
+                         timer expires
         ###
         scheduleUpdate: (func, interval) ->
           members.cancelUpdate()
 
           if interval > 0
             members.debug "Next Request in #{interval} ms"
+            args = Array.prototype.splice.call arguments, 2
             device.__timeoutObject = setTimeout( ->
               device.__timeoutObject = null
-              func.call(device)
+              func.apply device, args
             , interval
             )
 

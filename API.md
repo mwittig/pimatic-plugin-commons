@@ -117,16 +117,16 @@ Set the named attribute to the given value. The attribute
 
 Cancel a scheduled update.
 
-## scheduleUpdate(func, interval)
+## scheduleUpdate(func, interval, [...])
 
-Schedule an update. The given member function of the device
-            is called after 'interval' milliseconds. Repeated call will
+Schedule an update. The given member function of the device is called after 'interval' milliseconds. Repeated call will
             remove any previous schedule.
 
 ### Params:
 
 * **Function** *func* - update function to be called
 * **Number** *interval* - interval in milliseconds
+* *[...]* - additional parameters which are passed through to the function specified by func once the timer expires
 
 ## normalize(value, lowerRange, [upperRange])
 

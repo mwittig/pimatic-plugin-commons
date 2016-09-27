@@ -318,6 +318,19 @@ describe("Testing the base device functions", function() {
         base.scheduleUpdate(update, 500);
     });
 
+    it("shall schedule an update with additional command args", function(done) {
+        var startTime = process.hrtime();
+        function update(arg1, arg2) {
+            var deltaTime = process.hrtime(startTime)
+            expect(deltaTime[0] * 1e6 + deltaTime[1] / 1e3).not.toBeLessThan(500);
+            expect(arg1).toBe("TEST1");
+            expect(arg2).toBe("TEST2");
+            done();
+        }
+
+        base.scheduleUpdate(update, 500, "TEST1", "TEST2");
+    });
+
     it("shall not schedule an update if interval is 0", function(done) {
         function update() {
             expect(true).toBe(false);
