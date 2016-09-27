@@ -7,6 +7,10 @@
 Common helper functions for pimatic plugins. For API documentation, see 
 [API.md](https://github.com/mwittig/pimatic-plugin-commons/blob/master/API.md).
 
+## History
+
+See [Release History](https://github.com/mwittig/pimatic-plugin-commons/blob/master/HISTORY.md).
+
 ## License
 
 Copyright (c) 2016, Marcus Wittig and contributors
