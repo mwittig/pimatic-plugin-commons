@@ -5,6 +5,7 @@
       additional parameters which are passed through to the function
       once the timer expires
     * Added release history
+    * Updated dev-dependencies
 
 * 201600706, V0.9.2
     * Added discrete parameter to setAtttribute() method
@@ -21,7 +22,7 @@
 * 20160325, V0.8.8
     * Updated dev-dependencies
     * Removed usage of deprecated Promise.settle
-    * Added licene info to README
+    * Added license info to README
 
 * 20160305, V0.8.7
     * Improved test coverage
