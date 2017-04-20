@@ -11,6 +11,12 @@ Common helper functions for pimatic plugins. For API documentation, see
 
 See [Release History](https://github.com/mwittig/pimatic-plugin-commons/blob/master/HISTORY.md).
 
+## Credits
+
+The work on periodic timers has been inspired by Andrew Duthie's blog post 
+ on [Creating a self-correcting alternative to JavaScript’s setInterval](http://andrewduthie.com/2013/12/31/creating-a-self-correcting-alternative-to-javascripts-setinterval/)
+ and I originally started my implementation of setPeriodicTimer() using parts of the example code transformed to CS.
+
 ## License
 
 Copyright (c) 2016-2017, Marcus Wittig and contributors
