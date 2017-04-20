@@ -12,6 +12,7 @@
     "gulpfile.coffee",
     "gulpfile.js",
     "LICENSE",
+    "HISTORY.md",
     "README.md"
   ],
   "keywords": [
@@ -20,7 +21,7 @@
   "scripts": {
     "test": "./node_modules/.bin/gulp"
   },
-  "version": "0.9.3",
+  "version": "0.9.4",
   "homepage": "https://github.com/mwittig/pimatic-plugin-commons/tree/master",
   "private": false,
   "repository": {
