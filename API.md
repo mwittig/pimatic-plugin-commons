@@ -4,9 +4,13 @@
 
 ## pimatic-plugin-commons API
 
-## settled()
+## settled(promise)
 
 Waits for a given promise to be resolved or rejected.
+
+### Params:
+
+* **Promise** *promise* - the promise to wait for
 
 ## series(input, mapper)
 
@@ -29,7 +33,7 @@ Calls a function repeatedly, with a fixed time delay between each call
 
 ### Params:
 
-* **Function** *func* - function to be called
+* **Function** *func* - the function to be called
 * **Number** *delay* - delay in milliseconds
 
 ### Return:
@@ -76,7 +80,7 @@ Outputs an error message and optionally rejects a Promise on return.
 
 * **Function** *reject* - function to reject a promise on return,                                        may be null
 * **Error** *error* - error object
-* **String** *[customMessage]* - a custom message to be used as prefix to the error message
+* **String** *[customMessage]* - a custom message to be used as prefix                                                to the error message
 
 ## rejectWithError(reject, error)
 

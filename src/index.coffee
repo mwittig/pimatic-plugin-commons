@@ -10,6 +10,7 @@ module.exports = (env) ->
 
     ###
       Waits for a given promise to be resolved or rejected.
+      @param {Promise} promise - the promise to wait for
     ###
     settled: (promise) -> promise.reflect()
 
@@ -28,38 +29,37 @@ module.exports = (env) ->
       function call at the next ick rather than starting with timeout delay.
       Moreover, it adjust the delay time to dispatch periodic calls with higher
       accuracy than setInterval() does.
-      @param {Function} func - function to be called
+      @param {Function} func - the function to be called
       @param {Number} delay - delay in milliseconds
       @return {String} the timer id
     ###
     setPeriodicTimer: (func, delay) ->
       id = "setPeriodicTimer.#{++_intervalId}"
-      instance = {
+      timerData = {
         func: func
         delay: delay
         target: 0
+        started: false
       }
 
       taskHandler = ((func, delay) ->
-        if common._periodicTimers.hasOwnProperty(id)
-          delete common._periodicTimers[id]
-
-        unless instance.started?
-          instance.started = true
-          common._periodicTimers[id] = setTimeout(taskHandler, instance.target)
+        unless timerData.started
+          timerData.started = true
+          common._periodicTimers[id] = setTimeout(taskHandler, timerData.target)
         else
-          elapsed = instance.delay
-          adjust = 0
-          if instance.target is 0
-            instance.target = instance.delay
-            instance.startTime = new Date().valueOf() - instance.delay
+          if timerData.target is 0
+            adjust = 0
+            timerData.target = timerData.delay
+            timerData.startTime = Date.now() - timerData.delay
           else
-            elapsed = new Date().valueOf() - instance.startTime;
-            adjust = instance.target - elapsed;
+            elapsed = Date.now() - timerData.startTime;
+            adjust = timerData.target - elapsed;
 
-          instance.target += instance.delay
-          common._periodicTimers[id] = setTimeout(taskHandler, instance.delay + adjust)
-          instance.func()
+          timerData.target += timerData.delay
+          if common._periodicTimers.hasOwnProperty(id)
+            common._periodicTimers[id] = setTimeout(taskHandler, timerData.delay + adjust)
+            timerData.func()
+
         return id
       )
       return taskHandler(func, delay)
@@ -107,7 +107,8 @@ module.exports = (env) ->
           @param {Function} reject - function to reject a promise on return,
                                      may be null
           @param {Error} error  - error object
-          @param {String} [customMessage]  - a custom message to be used as prefix to the error message
+          @param {String} [customMessage]  - a custom message to be used as prefix
+                                             to the error message
         ###
         rejectWithErrorString: (reject, error="Unknown", customMessage=null) ->
           message = "" + (error.message ? error)

@@ -1,5 +1,9 @@
 # Release History
    
+* next release
+    * Optimized periodic timer support
+    * Improved API documentation
+    
 * 20170420, V0.9.4
     * Added periodic timer support which provides better accuracy than
       setInterval()
