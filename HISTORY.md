@@ -1,5 +1,11 @@
 # Release History
    
+* 20170420, V0.9.4
+    * Added periodic timer support which provides better accuracy than
+      setInterval().
+    * Updated dependencies
+    * Updated copyright notice
+
 * 20160927, V0.9.3
     * Extended scheduleUpdate() method to handle variable arguments as
       additional parameters which are passed through to the function
