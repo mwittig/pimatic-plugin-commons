@@ -13,7 +13,7 @@ See [Release History](https://github.com/mwittig/pimatic-plugin-commons/blob/mas
 
 ## License
 
-Copyright (c) 2016, Marcus Wittig and contributors
+Copyright (c) 2016-2017, Marcus Wittig and contributors
 
 All rights reserved.
 
