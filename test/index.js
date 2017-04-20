@@ -331,12 +331,48 @@ describe("Testing the base device functions", function() {
         base.scheduleUpdate(update, 500, "TEST1", "TEST2");
     });
 
-    it("shall not schedule an update if interval is 0", function(done) {
+    it("shall throw if interval is 0", function(done) {
         function update() {
             expect(true).toBe(false);
             done();
         }
-        base.scheduleUpdate(update, 0);
+        try {
+          base.scheduleUpdate(update, 0);
+          expect(true).toBe(false);
+        }
+        catch (e) {
+            expect(e.toString()).toBe("Error: Missing or invalid interval parameter");
+        }
+        base.debounce(500, function() {
+            done()
+        })
+    });
+
+    it("shall throw if interval is undefined", function(done) {
+        function update() {
+            expect(true).toBe(false);
+            done();
+        }
+        try {
+            base.scheduleUpdate(update);
+            expect(true).toBe(false);
+        }
+        catch (e) {
+            expect(e.toString()).toBe("Error: Missing or invalid interval parameter");
+        }
+        base.debounce(500, function() {
+            done()
+        })
+    });
+
+    it("shall throw if function is undefined", function(done) {
+        try {
+            base.scheduleUpdate();
+            expect(true).toBe(false);
+        }
+        catch (e) {
+            expect(e.toString()).toBe("Error: Missing function parameter");
+        }
         base.debounce(500, function() {
             done()
         })
@@ -452,6 +488,33 @@ describe("Testing the base device functions", function() {
         deviceId = base.generateDeviceId(fakeEnv.framework, "myDevice", "myDevice-1000");
         expect(deviceId).toBeUndefined();
         done();
+    });
+
+    it("it shall call a period timer twice", function(done) {
+        var i = 0;
+        var id = common.setPeriodicTimer(function() {
+            i++;
+            if (i === 2) {
+                common.clearPeriodicTimer(id);
+                done()
+            }
+        }, 100)
+    });
+
+    it("it shall ignore invalid timer ids", function(done) {
+        var id = "invalid";
+        common.clearPeriodicTimer(id);
+        done()
+    });
+
+    it("it shall call clear all period timers", function(done) {
+        var i = 0;
+        common.setPeriodicTimer(function() {}, 100);
+        common.setPeriodicTimer(function() {}, 100);
+        expect(common.activePeriodicTimers()).toBe(2);
+        common.clearAllPeriodicTimers();
+        expect(common.activePeriodicTimers()).toBe(0);
+        done()
     });
 });
 

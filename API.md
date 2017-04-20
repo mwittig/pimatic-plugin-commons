@@ -19,6 +19,44 @@ Maps an array of promises or items to a mapping function resolving or
 * **Array** *input* - an array of promises or items
 * **Function** *mapper* - the mapping function
 
+## setPeriodicTimer(func, delay)
+
+Calls a function repeatedly, with a fixed time delay between each call
+        to that function. It is similar to setInterval(), but makes an immediate
+        function call at the next ick rather than starting with timeout delay.
+        Moreover, it adjust the delay time to dispatch periodic calls with higher
+        accuracy than setInterval() does.
+
+### Params:
+
+* **Function** *func* - function to be called
+* **Number** *delay* - delay in milliseconds
+
+### Return:
+
+* **String** the timer id
+
+## clearPeriodicTimer(id)
+
+Takes a given timer id returned by a setPeriodicTimer()
+        call and clears the timer. Invalid timer ids are ignored.
+
+### Params:
+
+* **String** *id* - the timer id
+
+### Return:
+
+* **String** the timer id
+
+## clearAllPeriodicTimers()
+
+Clears all active periodic timers.
+
+## activePeriodicTimers()
+
+Returns the number of active period timers.
+
 ## base(device, deviceName)
 
 Base object providing device helper functions. **The functions described
@@ -119,14 +157,16 @@ Cancel a scheduled update.
 
 ## scheduleUpdate(func, interval, [...])
 
-Schedule an update. The given member function of the device is called after 'interval' milliseconds. Repeated call will
+Schedule an update. The given member function of the device
+            is called after 'interval' milliseconds. Repeated call will
             remove any previous schedule.
 
 ### Params:
 
 * **Function** *func* - update function to be called
-* **Number** *interval* - interval in milliseconds
-* *[...]* - additional parameters which are passed through to the function specified by func once the timer expires
+* **Number** *interval* - interval in milliseconds greater than 0
+* *[...]* - additional parameters which are passed through                            to the function specified by func once the
+                           timer expires
 
 ## normalize(value, lowerRange, [upperRange])
 

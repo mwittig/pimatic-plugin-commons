@@ -3,7 +3,11 @@
 ###
 module.exports = (env) ->
   Promise = env.require 'bluebird'
-  return {
+  _intervalId = 0
+
+  return common = {
+    _periodicTimers: {}
+
     ###
       Waits for a given promise to be resolved or rejected.
     ###
@@ -17,6 +21,73 @@ module.exports = (env) ->
       @param {Function} mapper - the mapping function
     ###
     series: (input, mapper) -> Promise.mapSeries(input, mapper)
+
+    ###
+      Calls a function repeatedly, with a fixed time delay between each call
+      to that function. It is similar to setInterval(), but makes an immediate
+      function call at the next ick rather than starting with timeout delay.
+      Moreover, it adjust the delay time to dispatch periodic calls with higher
+      accuracy than setInterval() does.
+      @param {Function} func - function to be called
+      @param {Number} delay - delay in milliseconds
+      @return {String} the timer id
+    ###
+    setPeriodicTimer: (func, delay) ->
+      id = "setPeriodicTimer.#{++_intervalId}"
+      instance = {
+        func: func
+        delay: delay
+        target: 0
+      }
+
+      taskHandler = ((func, delay) ->
+        if common._periodicTimers.hasOwnProperty(id)
+          delete common._periodicTimers[id]
+
+        unless instance.started?
+          instance.started = true
+          common._periodicTimers[id] = setTimeout(taskHandler, instance.target)
+        else
+          elapsed = instance.delay
+          adjust = 0
+          if instance.target is 0
+            instance.target = instance.delay
+            instance.startTime = new Date().valueOf() - instance.delay
+          else
+            elapsed = new Date().valueOf() - instance.startTime;
+            adjust = instance.target - elapsed;
+
+          instance.target += instance.delay
+          common._periodicTimers[id] = setTimeout(taskHandler, instance.delay + adjust)
+          instance.func()
+        return id
+      )
+      return taskHandler(func, delay)
+
+    ###
+      Takes a given timer id returned by a setPeriodicTimer()
+      call and clears the timer. Invalid timer ids are ignored.
+      @param {String} id - the timer id
+      @return {String} the timer id
+    ###
+    clearPeriodicTimer: (id) ->
+      if common._periodicTimers.hasOwnProperty(id)
+        clearTimeout common._periodicTimers[id]
+        delete common._periodicTimers[id]
+
+    ###
+      Clears all active periodic timers.
+    ###
+    clearAllPeriodicTimers: () ->
+      for own k, v of common._periodicTimers
+        clearTimeout v
+        delete common._periodicTimers[k]
+
+    ###
+      Returns the number of active period timers.
+    ###
+    activePeriodicTimers: () ->
+      Object.keys(common._periodicTimers).length
 
     ###
       Base object providing device helper functions. **The functions described
@@ -160,7 +231,7 @@ module.exports = (env) ->
                          to the function specified by func once the
                          timer expires
         ###
-        scheduleUpdate: (func, interval) ->
+        scheduleUpdate: (func, interval=0) ->
           members.cancelUpdate()
 
           if (typeof func is 'undefined')
