@@ -1,7 +1,9 @@
 # Release History
    
-* next release
+* 20170429, V0.9.5
     * Optimized periodic timer support
+    * Changed behavior of scheduleUpdate: Now, an interval of 0 will trigger an
+      immediate update
     * Improved API documentation
     
 * 20170420, V0.9.4

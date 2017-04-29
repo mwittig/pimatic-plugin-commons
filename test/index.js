@@ -331,13 +331,13 @@ describe("Testing the base device functions", function() {
         base.scheduleUpdate(update, 500, "TEST1", "TEST2");
     });
 
-    it("shall throw if interval is 0", function(done) {
+    it("shall throw if interval is less than 0", function(done) {
         function update() {
             expect(true).toBe(false);
             done();
         }
         try {
-          base.scheduleUpdate(update, 0);
+          base.scheduleUpdate(update, -100);
           expect(true).toBe(false);
         }
         catch (e) {

@@ -227,17 +227,20 @@ module.exports = (env) ->
           is called after 'interval' milliseconds. Repeated call will
           remove any previous schedule.
           @param {Function} func - update function to be called
-          @param {Number} interval - interval in milliseconds greater than 0
+          @param {Number} interval - interval in milliseconds. 0 will
+                          trigger an immediate update
           @param [...] - additional parameters which are passed through
                          to the function specified by func once the
                          timer expires
         ###
-        scheduleUpdate: (func, interval=0) ->
+        scheduleUpdate: (func, interval) ->
           members.cancelUpdate()
 
           if (typeof func is 'undefined')
             throw new Error "Missing function parameter"
-          if interval > 0
+          if (typeof interval is 'undefined' or interval < 0)
+            throw new Error 'Missing or invalid interval parameter'
+          else
             members.debug "Next Request in #{interval} ms"
             args = Array.prototype.splice.call arguments, 2
             device.__timeoutObject = setTimeout( ->
@@ -245,8 +248,6 @@ module.exports = (env) ->
               func.apply device, args
             , interval
             )
-          else
-            throw new Error 'Missing or invalid interval parameter'
 
         ###
           Normalize a given value to match the given lowerRange and
