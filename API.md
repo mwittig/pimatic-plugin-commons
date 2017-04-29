@@ -168,7 +168,7 @@ Schedule an update. The given member function of the device
 ### Params:
 
 * **Function** *func* - update function to be called
-* **Number** *interval* - interval in milliseconds greater than 0
+* **Number** *interval* - interval in milliseconds. 0 will                             trigger an immediate update
 * *[...]* - additional parameters which are passed through                            to the function specified by func once the
                            timer expires
 
