@@ -1,5 +1,9 @@
 # Release History
    
+* 20171228, V0.9.6   
+    * Ignore undefined or null value parameter passed to setAttribute
+    * Updated dependencies
+
 * 20170429, V0.9.5
     * Optimized periodic timer support
     * Changed behavior of scheduleUpdate: Now, an interval of 0 will trigger an
