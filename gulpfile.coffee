@@ -55,6 +55,7 @@ gulp.task('coveralls', ->
 gulp.task('doc', ->
   gulp.src(sourceFiles)
     .pipe(markdox({ concat: 'API.md', output: 'API.md' }))
+    .pipe(gulp.dest("./"));
 )
 
 gulp.task('lint', ->
