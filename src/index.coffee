@@ -52,12 +52,13 @@ module.exports = (env) ->
             timerData.target = timerData.delay
             timerData.startTime = Date.now() - timerData.delay
           else
-            elapsed = Date.now() - timerData.startTime;
-            adjust = timerData.target - elapsed;
+            elapsed = Date.now() - timerData.startTime
+            adjust = timerData.target - elapsed
 
           timerData.target += timerData.delay
           if common._periodicTimers.hasOwnProperty(id)
-            common._periodicTimers[id] = setTimeout(taskHandler, timerData.delay + adjust)
+            common._periodicTimers[id] =
+              setTimeout(taskHandler, timerData.delay + adjust)
             timerData.func()
 
         return id
@@ -107,8 +108,8 @@ module.exports = (env) ->
           @param {Function} reject - function to reject a promise on return,
                                      may be null
           @param {Error} error  - error object
-          @param {String} [customMessage]  - a custom message to be used as prefix
-                                             to the error message
+          @param {String} [customMessage]  - a custom message to be used
+                                             as prefix to the error message
         ###
         rejectWithErrorString: (reject, error="Unknown", customMessage=null) ->
           message = "" + (error.message ? error)
@@ -125,7 +126,8 @@ module.exports = (env) ->
 
         ###
           Same as rejectWithErrorString, but has been deprecated
-          @param {Function} reject - function to reject a promise on return, may be null
+          @param {Function} reject - function to reject a promise on return,
+                                     may be null
           @param {Error} error  - error object
           @deprecated
         ###
@@ -207,8 +209,8 @@ module.exports = (env) ->
           only updated if the value has been changed.
           @param {String} attributeName - the attribute name
           @param {Any} value - the attribute value
-          @param [Boolean} [discrete=false] - True if attribute value is discrete,
-          e.g., a switch state. False, otherwise.
+          @param [Boolean} [discrete=false] - True if attribute value is
+          discrete, e.g., a switch state. False, otherwise.
         ###
         setAttribute: (attributeName, value, discrete=false) ->
           if value? and not discrete or device['_' + attributeName] isnt value
@@ -308,18 +310,22 @@ module.exports = (env) ->
         ###
           Generates a new device id which is not yet in use by another device
           @param {Object} framework - the pimatic framework object.
-          @param {String} prefix - a prefix string to be used as part of device id.
+          @param {String} prefix - a prefix string to be used as part of
+          the device id.
           @param {String} [lastId] - the lastId returned by generateDeviceId
-          @returns {String} the id generated or undefined if id could not be generated
+          @returns {String} the id generated or undefined
+          if id could not be generated
         ###
         generateDeviceId: (framework, prefix, lastId = null) ->
           start = 1
           if lastId?
             m = lastId.match /.*-([0-9]+)$/
             start = +m[1] + 1 if m? and m.length is 2
+
+          cfg = framework.deviceManager.devicesConfig
           for x in [start...1000] by 1
             result = "#{prefix}-#{x}"
-            matched = framework.deviceManager.devicesConfig.some (element, iterator) ->
+            matched = cfg.some (element, iterator) ->
               element.id is result
             return result if not matched
       }
