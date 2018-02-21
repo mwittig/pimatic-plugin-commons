@@ -1,4 +1,9 @@
 # Release History
+
+* 20180221, V0.9.7
+    * Code cleanup
+    * Updated dependencies
+    * Revised docs
    
 * 20171228, V0.9.6   
     * Ignore undefined or null value parameter passed to setAttribute
