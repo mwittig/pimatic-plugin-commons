@@ -80,7 +80,7 @@ Outputs an error message and optionally rejects a Promise on return.
 
 * **Function** *reject* - function to reject a promise on return,                                        may be null
 * **Error** *error* - error object
-* **String** *[customMessage]* - a custom message to be used as prefix                                                to the error message
+* **String** *[customMessage]* - a custom message to be used                                                as prefix to the error message
 
 ## rejectWithError(reject, error)
 
@@ -90,7 +90,7 @@ Same as rejectWithErrorString, but has been deprecated
 
 ### Params:
 
-* **Function** *reject* - function to reject a promise on return, may be null
+* **Function** *reject* - function to reject a promise on return,                                        may be null
 * **Error** *error* - error object
 
 ## info(...)
@@ -139,7 +139,7 @@ Outputs a stack trace if debug is enabled.
 
 * **Error** *[error]* Error object, or null
 
-## setAttribute(attributeName, value, [Boolean} [discrete=false] - True if attribute value is discrete,)
+## setAttribute(attributeName, value, [Boolean} [discrete=false] - True if attribute value is)
 
 Set the named attribute to the given value. The attribute
             value must be kept in a member variable named `_<attributeName>`
@@ -154,7 +154,7 @@ Set the named attribute to the given value. The attribute
 
 * **String** *attributeName* - the attribute name
 * **Any** *value* - the attribute value
-* *[Boolean} [discrete=false] - True if attribute value is discrete,*             e.g., a switch state. False, otherwise.
+* *[Boolean} [discrete=false] - True if attribute value is*             discrete, e.g., a switch state. False, otherwise.
 
 ## cancelUpdate()
 
@@ -220,12 +220,12 @@ Generates a new device id which is not yet in use by another device
 ### Params:
 
 * **Object** *framework* - the pimatic framework object.
-* **String** *prefix* - a prefix string to be used as part of device id.
+* **String** *prefix* - a prefix string to be used as part of             the device id.
 * **String** *[lastId]* - the lastId returned by generateDeviceId
 
 ### Return:
 
-* **String** the id generated or undefined if id could not be generated
+* **String** the id generated or undefined             if id could not be generated
 
 <!-- End src\index.coffee -->
 
