@@ -1,5 +1,8 @@
 # Release History
 
+* 20180530, V0.9.8
+    * Updated license file
+    
 * 20180221, V0.9.7
     * Code cleanup
     * Updated dependencies
