@@ -114,6 +114,17 @@ Outputs a debug message with an arbitrary list of arguments if
 
 * *...* 
 
+## logErrorWithLevel(level, ...)
+
+Outputs an error message at a given log level followed by an arbitrary list of arguments.
+            The output is prefixed with the 'deviceClassName'
+            and optionally the 'id' property (if present) of the device.
+
+### Params:
+
+* *level* - one of "error", "info", "debug"
+* *...* 
+
 ## error(...)
 
 Outputs an error message with an arbitrary list of arguments.

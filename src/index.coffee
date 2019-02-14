@@ -165,21 +165,34 @@ module.exports = (env) ->
             env.logger.debug args...
 
         ###
+          Outputs an error message at a given log level followed by an arbitrary list of arguments.
+          The output is prefixed with the 'deviceClassName'
+          and optionally the 'id' property (if present) of the device.
+          @param level - one of "error", "info", "debug"
+          @param ...
+        ###
+        logErrorWithLevel: () ->
+          level = arguments[0] + ""
+          if (level in ["error","warn","info"]) and
+            (device.debug is true or not device.__lastError? or
+              device.__lastError isnt arguments[1] + "")
+            device.__lastError = arguments[1] + ""
+            args = Array.prototype.slice.call arguments
+            args.shift()
+            if args.length > 0
+              args[0] = members._entityName() + ' ' + args[0]
+            else
+              args[0] = members._entityName()
+            env.logger.error args...
+
+        ###
           Outputs an error message with an arbitrary list of arguments.
           The output is prefixed with the 'deviceClassName'
           and optionally the 'id' property (if present) of the device.
           @param ...
         ###
         error: () ->
-          if (device.debug is true or not device.__lastError? or
-              device.__lastError isnt arguments[0] + "")
-            device.__lastError = arguments[0] + ""
-            args = Array.prototype.slice.call arguments
-            if args.length > 0
-              args[0] = members._entityName() + ' ' + args[0]
-            else
-              args[0] = members._entityName()
-            env.logger.error args...
+          members.logErrorWithLevel "error", arguments...
 
         ###
           Reset the lastError guard which inhibits the repeated
