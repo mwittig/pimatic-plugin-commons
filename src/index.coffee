@@ -183,7 +183,7 @@ module.exports = (env) ->
               args[0] = members._entityName() + ' ' + args[0]
             else
               args[0] = members._entityName()
-            env.logger.error args...
+            env.logger[level] args...
 
         ###
           Outputs an error message with an arbitrary list of arguments.
