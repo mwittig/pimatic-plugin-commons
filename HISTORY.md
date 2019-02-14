@@ -1,5 +1,8 @@
 # Release History
 
+* 20190214, V0.9.9
+    * Added function logErrorWithLevel to report an error with a given log level of "error", "warn", or "info"
+    
 * 20180530, V0.9.8
     * Updated license file
     
