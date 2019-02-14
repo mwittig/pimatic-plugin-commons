@@ -23,7 +23,7 @@ The work on periodic timers has been inspired by Andrew Duthie's blog post
 
 ## License
 
-Copyright (c) 2016-2018, Marcus Wittig and contributors
+Copyright (c) 2016-2019, Marcus Wittig and contributors
 
 All rights reserved.
 
